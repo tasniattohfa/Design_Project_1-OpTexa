@@ -24,8 +24,8 @@ class _HomeScreenState extends State<HomeScreen> {
   ImagePicker _picker = ImagePicker();
   bool objectDetection = false;
   List<ResultObjectDetection?> objDetect = [];
-  bool firststate = true; // Changed to true to open the camera immediately
-  bool message = false; // Changed to false to hide the message
+  bool firststate = true;
+  bool message = false;
   @override
   void initState() {
     super.initState();
