@@ -24,12 +24,13 @@ class _HomeScreenState extends State<HomeScreen> {
   ImagePicker _picker = ImagePicker();
   bool objectDetection = false;
   List<ResultObjectDetection?> objDetect = [];
-  bool firststate = false;
-  bool message = true;
+  bool firststate = true; // Changed to true to open the camera immediately
+  bool message = false; // Changed to false to hide the message
   @override
   void initState() {
     super.initState();
     loadModel();
+    runObjectDetection(); // Automatically run the object detection when the app starts
   }
 
   Future loadModel() async {
@@ -47,19 +48,16 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  Timer scheduleTimeout([int milliseconds = 10000]) =>
+      Timer(Duration(milliseconds: milliseconds), handleTimeout);
+
   void handleTimeout() {
     setState(() {
       firststate = true;
     });
   }
 
-  Timer scheduleTimeout([int milliseconds = 10000]) =>
-      Timer(Duration(milliseconds: milliseconds), handleTimeout);
   Future runObjectDetection() async {
-    setState(() {
-      firststate = false;
-      message = false;
-    });
     final XFile? image = await _picker.pickImage(source: ImageSource.camera);
     objDetect = await _objectModel.getImagePrediction(
         await File(image!.path).readAsBytes(),
@@ -102,36 +100,36 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("VisioAid")),
+      appBar: AppBar(title: const Text("Optexa")),
       backgroundColor: Colors.white,
       body: Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          !firststate
-              ? !message
-                  ? LoaderState()
-                  : Text("Select the Camera to Begin Detections")
-              : Expanded(
-                  child: Container(
-                      child:
-                          _objectModel.renderBoxesOnImage(_image!, objDetect)),
-                ),
-          Center(
-            child: Visibility(
-              visible: _imagePrediction != null,
-              child: Text("$_imagePrediction"),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            firststate
+                ? Expanded(
+              child: Container(
+                child: _image != null
+                    ? _objectModel.renderBoxesOnImage(_image!, objDetect)
+                    : CircularProgressIndicator(), // Show loading indicator while capturing the image
+              ),
+            )
+                : Text("Select the Camera to Begin Detections"),
+            Center(
+              child: Visibility(
+                visible: _imagePrediction != null,
+                child: Text("$_imagePrediction"),
+              ),
             ),
-          ),
-
-          ElevatedButton(
-            onPressed: () {
-              runObjectDetection();
-            },
-            child: const Icon(Icons.camera),
-          )
-        ],
-      )),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          runObjectDetection();
+        },
+        child: Icon(Icons.camera),
+      ),
     );
   }
 }

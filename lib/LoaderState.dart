@@ -39,7 +39,7 @@ class _LoaderStateState extends State<LoaderState>
             child: Container(
               margin: EdgeInsets.only(right: 20.0),
               child: Gif(
-                image: AssetImage("images/dentskanload.gif"),
+                image: AssetImage("images/loading.png"),
                 controller: controller1,
                 autostart: Autostart.loop,
                 onFetchCompleted: () {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:object_detection/HomeScreen.dart';
+//import 'package:object_detection/HomeScreen.dart';
 import 'package:object_detection/splash.dart';
 
 void main() {
@@ -12,10 +12,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'VisioAid',
+      title: 'Optexa',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        primarySwatch: Colors.blue
+        ,
       ),
       home: Splash(),
     );
