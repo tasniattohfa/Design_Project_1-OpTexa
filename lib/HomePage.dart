@@ -50,7 +50,6 @@ class HomePage extends StatelessWidget {
           children: [
             InkWell(
               onTap: () {
-                //runObjectDetection()
                 // Handle the tap, e.g., navigate to another screen
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => ObjectDetectedScreen()));
