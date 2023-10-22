@@ -123,6 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Text("$_imagePrediction"),
             ),
           ),
+
           ElevatedButton(
             onPressed: () {
               runObjectDetection();
